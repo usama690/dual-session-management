@@ -19,7 +19,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const storedSession = getSession();
-    console.log(storedSession, 'my storedsessions');
     
     if (storedSession?.user) {
       setUser({
