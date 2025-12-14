@@ -47,33 +47,6 @@ export default function HomePage() {
               }
             />
           </div>
-
-          <Card padding="lg">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Features</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <FeatureHighlight
-                icon="🔐"
-                title="Dual Authentication"
-                description="Separate authentication flows for users and administrators"
-              />
-              <FeatureHighlight
-                icon="🎭"
-                title="User Impersonation"
-                description="Admins can impersonate users to view their dashboard"
-              />
-              <FeatureHighlight
-                icon="💾"
-                title="Session Persistence"
-                description="LocalStorage-based session management for dual sessions"
-              />
-            </div>
-          </Card>
-
-          <div className="mt-12 text-gray-600">
-            <p className="text-sm">
-              Built with Next.js 14, NextAuth.js, TypeScript, and Tailwind CSS
-            </p>
-          </div>
         </div>
       </div>
     </div>
