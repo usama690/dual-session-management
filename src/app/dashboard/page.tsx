@@ -41,18 +41,6 @@ export default function DashboardPage() {
     logout(isImpersonated);
   };
 
-  const quickActions = [
-    {
-      label: 'Update Profile',
-      onClick: () => console.log('Update profile'),
-      variant: 'outline' as const,
-    },
-    {
-      label: 'Change Password',
-      onClick: () => console.log('Change password'),
-      variant: 'outline' as const,
-    },
-  ];
 
   if (!user) {
     return (
