@@ -11,6 +11,7 @@ export default function AdminPage() {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [impersonatedUserId, setImpersonatedUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const storedSession = getSession();
@@ -21,6 +22,7 @@ export default function AdminPage() {
     }
 
     setAdmin(storedSession.admin);
+    setImpersonatedUserId(storedSession.user?.id || null);
     
     const registeredUsers = getRegisteredUsers();
     setUsers(registeredUsers);
@@ -37,6 +39,8 @@ export default function AdminPage() {
       },
       admin: admin
     });
+
+    setImpersonatedUserId(user.id);
 
     window.open('/user-details', '_blank');
 
@@ -137,9 +141,13 @@ export default function AdminPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button
                             onClick={() => handleImpersonate(user)}
-                            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                              impersonatedUserId === user.id
+                                ? 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500'
+                                : 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500'
+                            }`}
                           >
-                            Impersonate Login
+                            {impersonatedUserId === user.id ? 'Impersonated' : 'Impersonate Login'}
                           </button>
                         </td>
                       </tr>

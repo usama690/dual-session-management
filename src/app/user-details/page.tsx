@@ -158,6 +158,7 @@ export default function UserDetailsPage() {
         <ChangePasswordModal
           userEmail={user.email}
           onClose={() => setShowPasswordModal(false)}
+          isAdminImpersonated={isImpersonated}
         />
       )}
     </div>

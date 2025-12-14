@@ -14,6 +14,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const storedSession = getSession();
+    console.log(storedSession,'my storedsessions')
     
     if (storedSession?.user) {
       setUser({
@@ -26,15 +27,8 @@ export default function DashboardPage() {
         user: storedSession.user,
         admin: storedSession.admin
       });
-    } else if (session?.user) {
-      setUser(session.user);
-      setIsImpersonated(session.user.isImpersonated || false);
-      
-      updateSession({
-        user: session.user,
-        admin: session.admin || null
-      });
-    } else if (status === 'unauthenticated') {
+    } 
+    else if (status === 'unauthenticated') {
       router.push('/login');
     }
   }, [session, status, router]);
@@ -54,10 +48,10 @@ export default function DashboardPage() {
     }
   };
 
-  if (status === 'loading' || !user) {
+  if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+        <div className="text-xl">No user session found</div>
       </div>
     );
   }

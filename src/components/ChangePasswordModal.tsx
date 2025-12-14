@@ -6,9 +6,10 @@ import { findUserByEmail, updateUserPassword } from '@/lib/storage';
 interface ChangePasswordModalProps {
   userEmail: string;
   onClose: () => void;
+  isAdminImpersonated?: boolean;
 }
 
-export default function ChangePasswordModal({ userEmail, onClose }: ChangePasswordModalProps) {
+export default function ChangePasswordModal({ userEmail, onClose, isAdminImpersonated = false }: ChangePasswordModalProps) {
   const [formData, setFormData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -31,10 +32,18 @@ export default function ChangePasswordModal({ userEmail, onClose }: ChangePasswo
     setError('');
     setLoading(true);
 
-    if (!formData.oldPassword || !formData.newPassword || !formData.confirmPassword) {
-      setError('All fields are required');
-      setLoading(false);
-      return;
+    if (isAdminImpersonated) {
+      if (!formData.newPassword || !formData.confirmPassword) {
+        setError('All fields are required');
+        setLoading(false);
+        return;
+      }
+    } else {
+      if (!formData.oldPassword || !formData.newPassword || !formData.confirmPassword) {
+        setError('All fields are required');
+        setLoading(false);
+        return;
+      }
     }
 
     if (formData.newPassword !== formData.confirmPassword) {
@@ -49,11 +58,13 @@ export default function ChangePasswordModal({ userEmail, onClose }: ChangePasswo
       return;
     }
 
-    const user = findUserByEmail(userEmail);
-    if (!user || user.password !== formData.oldPassword) {
-      setError('Old password is incorrect');
-      setLoading(false);
-      return;
+    if (!isAdminImpersonated) {
+      const user = findUserByEmail(userEmail);
+      if (!user || user.password !== formData.oldPassword) {
+        setError('Old password is incorrect');
+        setLoading(false);
+        return;
+      }
     }
 
     const updated = updateUserPassword(userEmail, formData.newPassword);
@@ -99,21 +110,23 @@ export default function ChangePasswordModal({ userEmail, onClose }: ChangePasswo
           )}
 
           <div className="space-y-4">
-            <div>
-              <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-700">
-                Old Password
-              </label>
-              <input
-                id="oldPassword"
-                name="oldPassword"
-                type="password"
-                required
-                value={formData.oldPassword}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
-                disabled={success}
-              />
-            </div>
+            {!isAdminImpersonated && (
+              <div>
+                <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-700">
+                  Old Password
+                </label>
+                <input
+                  id="oldPassword"
+                  name="oldPassword"
+                  type="password"
+                  required
+                  value={formData.oldPassword}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                  disabled={success}
+                />
+              </div>
+            )}
 
             <div>
               <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">

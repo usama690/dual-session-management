@@ -41,7 +41,6 @@ export const getRegisteredUsers = (): User[] => {
         return users;
       }
     } catch (error) {
-      console.log(error,'my errors')
     }
   }
   return serverSideUsers;

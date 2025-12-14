@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { saveUser, getRegisteredUsers } from '@/lib/storage';
+import { saveUser, getRegisteredUsers, getSession } from '@/lib/storage';
 import { User } from '@/types/auth';
 
 export default function SignupPage() {
@@ -19,6 +19,13 @@ export default function SignupPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const session = getSession();
+    if (session?.admin && session?.user) {
+      router.push('/admin');
+    }
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
