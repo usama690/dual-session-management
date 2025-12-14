@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { UserProfile } from '@/components/features/UserProfile';
+import { Navigation } from '@/components/layout/Navigation';
+import { PageContainer, PageMain } from '@/components/layout/PageContainer';
+import { useLogout } from '@/hooks/useLogout';
 import { getSession, updateSession } from '@/lib/storage';
 import { SessionUser } from '@/types/auth';
-import { PageContainer, PageMain } from '@/components/layout/PageContainer';
-import { Navigation } from '@/components/layout/Navigation';
-import { UserProfile } from '@/components/features/UserProfile';
-import { QuickActions } from '@/components/features/QuickActions';
-import { useLogout } from '@/hooks/useLogout';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -76,7 +75,6 @@ export default function DashboardPage() {
       <PageMain>
         <div className="space-y-6">
           <UserProfile user={user} />
-          <QuickActions actions={quickActions} />
         </div>
       </PageMain>
     </PageContainer>
