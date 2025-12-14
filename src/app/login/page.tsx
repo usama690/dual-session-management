@@ -61,6 +61,7 @@ export default function LoginPage() {
             user: { ...user, isImpersonated: false },
             admin: session?.admin || null
           });
+          router.push("/dashboard")
         } else {
           setError('User not found');
           setLoading(false);
